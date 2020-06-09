@@ -63,10 +63,3 @@ functions:
       #     - suffix: .webp
     memorySize: 1024
     timeout: 10
-
-resources:
-  Resources:
-    S3BucketOutputs:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.bucket.${self:provider.stage}}

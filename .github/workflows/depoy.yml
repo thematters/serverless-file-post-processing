@@ -42,8 +42,6 @@ jobs:
         with:
           status: ${{ job.status }}
           author_name: serverless-file-post-processing
-          mention: 'zeckli,Guo,robertu'
-          if_mention: 'failure,cancelled'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
         if: always()
