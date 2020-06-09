@@ -15,4 +15,4 @@ See [their docs](https://www.serverless.com/framework/docs/) for more details.
 
 ## Deployment
 
-Serverless App will be deployed automatically by [GitHub Actions](./.github/deploy.yml).
+Serverless App will be deployed automatically by [GitHub Actions](./.github/workflows/deploy.yml).
