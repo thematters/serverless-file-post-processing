@@ -1,0 +1,68 @@
+service:
+  name: serverless-file-post-processing
+
+custom:
+  bucket:
+    - develop: matters-server-stage
+    - production: matters-server-production
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  region: ap-southeast-1
+  runtime: nodejs12.x
+  memorySize: 512
+  timeout: 6
+  versionFunctions: false
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "*"
+  stage: ${opt:stage, 'develop'}
+
+functions:
+  imageCreated:
+    handler: src/imageCreated.handler
+    description: resize & compress images
+    events:
+      - http:
+          path: hello
+          method: get
+      # - s3:
+      #   bucket: ${self:custom.bucket.${self:provider.stage}}
+      #   event: s3:ObjectCreated:*
+      #   rules:
+      #     - suffix: .png
+      # - s3:
+      #   bucket: ${self:custom.bucket.${self:provider.stage}}
+      #   event: s3:ObjectCreated:*
+      #   rules:
+      #     - suffix: .jpe
+      # - s3:
+      #   bucket: ${self:custom.bucket.${self:provider.stage}}
+      #   event: s3:ObjectCreated:*
+      #   rules:
+      #     - suffix: .jpeg
+      # - s3:
+      #   bucket: ${self:custom.bucket.${self:provider.stage}}
+      #   event: s3:ObjectCreated:*
+      #   rules:
+      #     - suffix: .svg
+      # - s3:
+      #   bucket: ${self:custom.bucket.${self:provider.stage}}
+      #   event: s3:ObjectCreated:*
+      #   rules:
+      #     - suffix: .gif
+      # - s3:
+      #   bucket: ${self:custom.bucket.${self:provider.stage}}
+      #   event: s3:ObjectCreated:*
+      #   rules:
+      #     - suffix: .webp
+    memorySize: 1024
+    timeout: 10
