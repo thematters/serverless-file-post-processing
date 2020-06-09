@@ -23,7 +23,7 @@ provider:
     - Effect: Allow
       Action:
         - s3:*
-      Resource: '*'
+      Resource: 'arn:aws:s3:::${self:custom.bucket.${self:provider.stage}}/*'
   stage: ${opt:stage, 'develop'}
 
 functions:
@@ -42,10 +42,10 @@ functions:
       #   rules:
       #     - suffix: .jpg
       - s3:
-        bucket: ${self:custom.bucket.${self:provider.stage}}
-        event: s3:ObjectCreated:*
-        rules:
-          - suffix: .jpeg
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .jpeg
       # - s3:
       #   bucket: ${self:custom.bucket.${self:provider.stage}}
       #   event: s3:ObjectCreated:*
@@ -63,3 +63,10 @@ functions:
       #     - suffix: .webp
     memorySize: 1024
     timeout: 10
+
+resources:
+  Resources:
+    S3BucketOutputs:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucket.${self:provider.stage}}
