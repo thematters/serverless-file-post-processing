@@ -22,7 +22,7 @@ jobs:
         uses: serverless/github-action@master
         if: github.ref == 'refs/heads/develop'
         with:
-          args: deploy --stage develop --force
+          args: deploy --stage develop --force --verbose
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -32,7 +32,7 @@ jobs:
         uses: serverless/github-action@master
         if: github.ref == 'refs/heads/master'
         with:
-          args: deploy --stage production --force
+          args: deploy --stage production --force --verbose
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

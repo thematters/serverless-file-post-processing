@@ -31,35 +31,35 @@ functions:
     handler: src/imageCreated.handler
     description: resize & compress images
     events:
-      - s3:
-        bucket: ${self:custom.bucket.${self:provider.stage}}
-        event: s3:ObjectCreated:*
-        rules:
-          - suffix: .png
-      - s3:
-        bucket: ${self:custom.bucket.${self:provider.stage}}
-        event: s3:ObjectCreated:*
-        rules:
-          - suffix: .jpg
+      # - s3:
+      #   bucket: ${self:custom.bucket.${self:provider.stage}}
+      #   event: s3:ObjectCreated:*
+      #   rules:
+      #     - suffix: .png
+      # - s3:
+      #   bucket: ${self:custom.bucket.${self:provider.stage}}
+      #   event: s3:ObjectCreated:*
+      #   rules:
+      #     - suffix: .jpg
       - s3:
         bucket: ${self:custom.bucket.${self:provider.stage}}
         event: s3:ObjectCreated:*
         rules:
           - suffix: .jpeg
-      - s3:
-        bucket: ${self:custom.bucket.${self:provider.stage}}
-        event: s3:ObjectCreated:*
-        rules:
-          - suffix: .svg
-      - s3:
-        bucket: ${self:custom.bucket.${self:provider.stage}}
-        event: s3:ObjectCreated:*
-        rules:
-          - suffix: .gif
-      - s3:
-        bucket: ${self:custom.bucket.${self:provider.stage}}
-        event: s3:ObjectCreated:*
-        rules:
-          - suffix: .webp
+      # - s3:
+      #   bucket: ${self:custom.bucket.${self:provider.stage}}
+      #   event: s3:ObjectCreated:*
+      #   rules:
+      #     - suffix: .svg
+      # - s3:
+      #   bucket: ${self:custom.bucket.${self:provider.stage}}
+      #   event: s3:ObjectCreated:*
+      #   rules:
+      #     - suffix: .gif
+      # - s3:
+      #   bucket: ${self:custom.bucket.${self:provider.stage}}
+      #   event: s3:ObjectCreated:*
+      #   rules:
+      #     - suffix: .webp
     memorySize: 1024
     timeout: 10
