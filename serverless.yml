@@ -67,5 +67,5 @@ functions:
         rules:
           - suffix: .webp
         existing: true
-      memorySize: 1024
+    memorySize: 1024
     timeout: 10
