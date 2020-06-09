@@ -38,11 +38,12 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Slack Notification
-        uses: 8398a7/action-slack@v2
+        uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           author_name: serverless-file-post-processing
-          if_mention: failure
+          mention: 'zeckli,Guo,robertu '
+          if_mention: 'failure,cancelled'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
         if: always()
