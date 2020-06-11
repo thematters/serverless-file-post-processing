@@ -27,13 +27,24 @@ export enum IMAGE_FORMATS {
 /**
  * Maximum image size in width
  */
-export const IMAGE_DIMENSION_LIMIT = 1400
+export const IMAGE_WIDTH_LIMIT = 1400
 
 /**
- * Target image sizes in width
+ * Target image sizes
  */
-export const IMAGE_SIZES: { [key in IMAGE_TYPES]: number[] } = {
-  avatar: [144],
-  profileCover: [540, 1080],
-  embed: [144, 360, 540, 1080],
+export type IMAGE_SIZE = { width: number; height?: number }
+export const IMAGE_SIZES: {
+  [key in IMAGE_TYPES]: IMAGE_SIZE[]
+} = {
+  avatar: [{ width: 144, height: 144 }],
+  profileCover: [
+    { width: 540, height: null },
+    { width: 1080, height: null },
+  ],
+  embed: [
+    { width: 144, height: 144 },
+    { width: 360, height: null },
+    { width: 540, height: null },
+    { width: 1080, height: null },
+  ],
 }
