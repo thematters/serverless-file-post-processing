@@ -65,6 +65,8 @@ export const processImage = async (record: S3EventRecord) => {
 
   return Promise.all(
     sizes.map(async (size) => {
+      console.log(`[PROCESSING]: ${key}, size: ${size}`)
+
       // non-WebP
       const resizedImage = await resize({ buffer: rawImage, width: size })
       await s3.uploadFile({
