@@ -37,7 +37,17 @@ functions:
           event: s3:ObjectCreated:Put
           rules:
             - prefix: avatar/
-            - prefix: embed/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectCreated:Put
+          rules:
             - prefix: profileCover/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectCreated:Put
+          rules:
+            - prefix: embed/
     memorySize: 512
     timeout: 10
