@@ -17,6 +17,15 @@ export class S3Service {
   }
 
   /**
+   * Get file tags
+   */
+  getFileTags = async ({ bucket, key }: { bucket: string; key: string }) => {
+    console.log(`[GET:Tags]: ${key}`)
+
+    return this.s3.getObjectTagging({ Bucket: bucket, Key: key }).promise()
+  }
+
+  /**
    * Upload file to AWS S3.
    */
   uploadFile = async ({
@@ -24,11 +33,13 @@ export class S3Service {
     bucket,
     contentType,
     key,
+    tagging,
   }: {
     body: Buffer
     bucket: string
     contentType: string
     key: string
+    tagging?: string
   }) => {
     console.log(`[UPLOAD]: ${key}`)
 
@@ -38,6 +49,7 @@ export class S3Service {
         Bucket: bucket,
         ContentType: contentType,
         Key: key,
+        Tagging: tagging,
       })
       .promise()
   }
@@ -66,6 +78,7 @@ export class S3Service {
         Key: destKey,
         CopySource: src,
         MetadataDirective: 'COPY',
+        TaggingDirective: 'COPY',
       })
       .promise()
   }

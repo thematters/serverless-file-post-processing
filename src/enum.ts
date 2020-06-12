@@ -1,4 +1,12 @@
 /**
+ * Tagging
+ *
+ * @see {@url https://docs.aws.amazon.com/AmazonS3/latest/dev/object-tagging.html}
+ */
+export const TAG_VERSION_KEY = 'PostProcessingVersion'
+export const TAG_VERSION_VALUE = 'v1'
+
+/**
  * Output folder
  */
 export const IMAGE_FOLDER_OUT = 'processed'

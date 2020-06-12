@@ -11,6 +11,8 @@ import {
   IMAGE_WIDTH_LIMIT,
   IMAGE_SIZE,
   IMAGE_FORMATS,
+  TAG_VERSION_KEY,
+  TAG_VERSION_VALUE,
 } from './enum'
 import { S3Service } from './services'
 
@@ -25,19 +27,36 @@ export const handler: S3Handler = async (event, context) => {
     const s3 = new S3Service()
     const bucket = record.s3.bucket.name
     const key = record.s3.object.key
+    const baseUploadProps = {
+      bucket,
+      tagging: `${TAG_VERSION_KEY}=${TAG_VERSION_VALUE}`, // mark as processed
+    }
 
     /**
-     * Checkers
+     * Check if it's supported
      */
-    const isProcessed = key.indexOf(`${IMAGE_FOLDER_OUT}/`) >= 0
     const isSupported =
       Object.values(IMAGE_FORMATS).indexOf(key.split('.').pop() as any) >= 0
     const regexp = new RegExp(`(${Object.values(IMAGE_TYPES).join('|')})\/`)
     const type = key.match(regexp)[1]
     const sizes = IMAGE_SIZES[type] as IMAGE_SIZE[]
 
-    if (!sizes || isProcessed || !isSupported) {
-      console.log(`[SKIP]: ${key}`)
+    if (!sizes || !isSupported) {
+      console.log(`[SKIP]: ${key} it's supported`)
+      return
+    }
+
+    /**
+     * Check if it's processed
+     */
+    const { TagSet: tags } = await s3.getFileTags({ bucket, key })
+    const isProcessedByKey = key.indexOf(`${IMAGE_FOLDER_OUT}/`) >= 0
+    const isProcessedByTag = tags.some(
+      (tag) => tag.Key === TAG_VERSION_KEY && tag.Value === TAG_VERSION_VALUE
+    )
+
+    if (isProcessedByKey || isProcessedByTag) {
+      console.log(`[SKIP]: ${key} already been processed`)
       return
     }
 
@@ -66,8 +85,8 @@ export const handler: S3Handler = async (event, context) => {
     // we can't directly upload the image to the original folder
     const processedKey = toProcessedKey({ key, subFolder: '_temp' })
     await s3.uploadFile({
+      ...baseUploadProps,
       body: original,
-      bucket,
       contentType: originalContentType,
       key: processedKey,
     })
@@ -100,8 +119,8 @@ export const handler: S3Handler = async (event, context) => {
       ext: IMAGE_FORMATS.webp,
     })
     await s3.uploadFile({
+      ...baseUploadProps,
       body: original,
-      bucket,
       contentType: originalContentType,
       key: processedKeyWebP,
     })
@@ -124,8 +143,8 @@ export const handler: S3Handler = async (event, context) => {
         size,
       })
       await s3.uploadFile({
+        ...baseUploadProps,
         body: resizedImage,
-        bucket,
         contentType: originalContentType,
         key: toProcessedKey({ key, subFolder }),
       })
@@ -137,8 +156,8 @@ export const handler: S3Handler = async (event, context) => {
         size,
       })
       await s3.uploadFile({
+        ...baseUploadProps,
         body: resizedImageWebP,
-        bucket,
         contentType: 'image/webp',
         key: toProcessedKey({
           key,
