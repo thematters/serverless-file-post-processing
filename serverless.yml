@@ -34,6 +34,7 @@ functions:
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
+          # NOTE: to avoid execution loop, only receive event on object created
           event: s3:ObjectCreated:Put
           rules:
             - prefix: avatar/

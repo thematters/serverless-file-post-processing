@@ -1,8 +1,8 @@
 import * as sharp from 'sharp'
 
-import { IMAGE_FOLDER_OUT } from '../../enum'
+import { IMAGE_FOLDER_OUT, IMAGE_FORMATS } from '../enum'
 
-export const process = async ({
+export const processImage = async ({
   buffer,
   size = {},
   force = {},
@@ -46,24 +46,32 @@ export const process = async ({
 
 export const toProcessedKey = ({
   key,
-  width,
+  subFolder,
   ext,
 }: {
   key: string
-  width: number
-  ext?: string
+  subFolder: number | string
+  ext?: IMAGE_FORMATS
 }) => {
   const list = key.split('.')
-  const prefix = list.slice(0, list.length - 1).join('.')
   const extension = ext || list.slice(-1)
-  return `${IMAGE_FOLDER_OUT}/${width}w/${prefix}${
-    extension ? '.' + extension : ''
-  }`
+  const prefix = list.slice(0, list.length - 1).join('.')
+  const suffix = extension ? '.' + extension : ''
+
+  return `${IMAGE_FOLDER_OUT}/${subFolder}/${prefix}${suffix}`
 }
 
-export const toOriginalKey = ({ key, ext }: { key: string; ext?: string }) => {
+export const toOriginalKey = ({
+  key,
+  ext,
+}: {
+  key: string
+  ext?: IMAGE_FORMATS
+}) => {
   const list = key.split('.')
-  const prefix = list.slice(0, list.length - 1).join('.')
   const extension = ext || list.slice(-1)
-  return `${prefix}${extension ? '.' + extension : ''}`
+  const prefix = list.slice(0, list.length - 1).join('.')
+  const suffix = extension ? '.' + extension : ''
+
+  return `${prefix}${suffix}`
 }
