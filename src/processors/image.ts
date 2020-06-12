@@ -117,7 +117,7 @@ export const processImage = async ({
   })
   await s3.uploadFile({
     ...baseUploadProps,
-    body: original,
+    body: originalWebP,
     contentType: originalContentType,
     key: processedKeyWebP,
   })
