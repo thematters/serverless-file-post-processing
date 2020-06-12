@@ -50,5 +50,5 @@ functions:
           event: s3:ObjectCreated:Put
           rules:
             - prefix: embed/
-    memorySize: 1536
+    memorySize: 3008
     timeout: 10
