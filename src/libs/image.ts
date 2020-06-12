@@ -2,7 +2,7 @@ import * as sharp from 'sharp'
 
 import { IMAGE_FOLDER_OUT, IMAGE_FORMATS } from '../enum'
 
-export const processImage = async ({
+export const sharpProcess = async ({
   buffer,
   size = {},
   force = {},

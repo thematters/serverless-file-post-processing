@@ -3,8 +3,18 @@ import * as AWS from 'aws-sdk'
 export class S3Service {
   s3: AWS.S3
 
-  constructor() {
-    this.s3 = new AWS.S3()
+  constructor({
+    accessKeyId,
+    secretAccessKey,
+  }: {
+    accessKeyId?: string
+    secretAccessKey?: string
+  } = {}) {
+    if (accessKeyId && secretAccessKey) {
+      this.s3 = new AWS.S3({ accessKeyId, secretAccessKey })
+    } else {
+      this.s3 = new AWS.S3()
+    }
   }
 
   /**
@@ -13,7 +23,7 @@ export class S3Service {
   listFiles = async ({
     bucket,
     after,
-    count,
+    count = 100,
     prefix,
   }: {
     bucket: string
@@ -35,7 +45,7 @@ export class S3Service {
       .promise()
 
     return {
-      objects: result.Contents,
+      files: result.Contents,
       next: result.NextContinuationToken,
       hasNext: result.IsTruncated,
     }
