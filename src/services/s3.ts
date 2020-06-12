@@ -8,6 +8,40 @@ export class S3Service {
   }
 
   /**
+   * List files
+   */
+  listFiles = async ({
+    bucket,
+    after,
+    count,
+    prefix,
+  }: {
+    bucket: string
+    after?: string
+    count?: number
+    prefix?: string
+  }) => {
+    console.log(
+      `[LIST]: bucket:${bucket}, after:${after}, count:${count}, prefix:${prefix}`
+    )
+
+    const result = await this.s3
+      .listObjectsV2({
+        Bucket: bucket,
+        ContinuationToken: after,
+        MaxKeys: count,
+        Prefix: prefix,
+      })
+      .promise()
+
+    return {
+      objects: result.Contents,
+      next: result.NextContinuationToken,
+      hasNext: result.IsTruncated,
+    }
+  }
+
+  /**
    * Read file by the given bucket and key
    */
   getFile = async ({ bucket, key }: { bucket: string; key: string }) => {
