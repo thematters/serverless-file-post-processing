@@ -1,5 +1,5 @@
 service:
-  name: file-post-processing
+  name: s3-file-processing
 
 custom:
   bucket:
