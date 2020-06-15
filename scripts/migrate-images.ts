@@ -5,9 +5,10 @@
 import * as prompts from 'prompts'
 import * as chalk from 'chalk'
 import { forEach } from 'p-iteration'
-import fetch from 'node-fetch'
+import fetch, { Response } from 'node-fetch'
 
 import { S3Service } from '../services'
+import { performance } from 'perf_hooks'
 
 const questions: Array<prompts.PromptObject> = [
   {
@@ -78,6 +79,14 @@ const questions: Array<prompts.PromptObject> = [
   },
 ]
 
+const checkStatus = (res: Response) => {
+  if (res.ok) {
+    return res
+  } else {
+    throw new Error(res.statusText)
+  }
+}
+
 ;(async () => {
   const {
     accessKeyId,
@@ -96,8 +105,8 @@ const questions: Array<prompts.PromptObject> = [
 
   if (!accessKeyId || !secretAccessKey) {
     console.log(`${chalk.red(
-      'ERROR: '
-    )}Access Key ID and Secret Access Key are required.
+      'ERROR:'
+    )} Access Key ID and Secret Access Key are required.
     `)
     return
   }
@@ -107,6 +116,7 @@ const questions: Array<prompts.PromptObject> = [
    */
   const s3 = new S3Service({ accessKeyId, secretAccessKey })
 
+  let counter = 1
   const params = {
     bucket,
     prefix,
@@ -117,20 +127,32 @@ const questions: Array<prompts.PromptObject> = [
   for (;;) {
     const { files, next, hasNext } = await s3.listFiles(params)
 
-    await forEach(files, async (file) => {
-      try {
-        await fetch(migrationEndpoint, {
-          method: 'post',
-          body: JSON.stringify({ bucket, key: file.Key }),
-          headers: { 'Content-Type': 'application/json' },
-        })
-        console.log(`${chalk.green('SUCCESS: ')} ${file.Key}`)
-      } catch (err) {
-        console.log(`${chalk.red('ERROR: ')} ${file.Key}`)
-        console.error(err)
-        throw err
+    await forEach(
+      files.filter((f) => !f.Key.includes('.webp')),
+      async (file) => {
+        counter++
+
+        try {
+          const now = performance.now()
+          const res = await fetch(migrationEndpoint, {
+            method: 'post',
+            body: JSON.stringify({ bucket, key: file.Key }),
+            headers: { 'Content-Type': 'application/json' },
+          })
+          checkStatus(res)
+          const duration = now - performance.now()
+          console.log(
+            `(${counter}) ${chalk.green('SUCCESS:')} ${file.Key} ${chalk.grey(
+              duration + 'ms'
+            )}`
+          )
+        } catch (err) {
+          console.log(`${chalk.red('ERROR:')} ${file.Key}`)
+          console.error(err)
+          throw err
+        }
       }
-    })
+    )
 
     if (!hasNext) {
       break
