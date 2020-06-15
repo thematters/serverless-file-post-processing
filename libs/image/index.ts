@@ -1,6 +1,6 @@
 import { forEach } from 'p-iteration'
 
-import { sharpProcess, toProcessedKey, toOriginalKey } from './utils'
+import { sharpProcess, toProcessedKey, changeExt } from './utils'
 import {
   IMAGE_FOLDER_OUT,
   IMAGE_SIZES,
@@ -111,7 +111,7 @@ export const processImage = async ({
     subFolder: '_temp',
     ext: IMAGE_FORMATS.webp,
   })
-  const originalKeyWebP = toOriginalKey({
+  const originalKeyWebP = changeExt({
     key,
     ext: IMAGE_FORMATS.webp,
   })

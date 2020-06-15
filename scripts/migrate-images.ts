@@ -5,10 +5,9 @@
 import * as prompts from 'prompts'
 import * as chalk from 'chalk'
 import { forEach } from 'p-iteration'
-import fetch, { Response } from 'node-fetch'
+import axios from 'axios'
 
 import { S3Service } from '../services'
-import { performance } from 'perf_hooks'
 
 const questions: Array<prompts.PromptObject> = [
   {
@@ -79,14 +78,6 @@ const questions: Array<prompts.PromptObject> = [
   },
 ]
 
-const checkStatus = (res: Response) => {
-  if (res.ok) {
-    return res
-  } else {
-    throw new Error(res.statusText)
-  }
-}
-
 ;(async () => {
   const {
     accessKeyId,
@@ -132,12 +123,12 @@ const checkStatus = (res: Response) => {
       files.filter((f) => !f.Key.includes('.webp')),
       async (file) => {
         try {
-          const res = await fetch(migrationEndpoint, {
-            method: 'post',
-            body: JSON.stringify({ bucket, key: file.Key }),
-            headers: { 'Content-Type': 'application/json' },
+          const data = { bucket, key: file.Key }
+
+          await axios.post(migrationEndpoint, data, {
+            timeout: 10000,
           })
-          checkStatus(res)
+
           successKeys.push(file.Key)
 
           console.log(
@@ -145,10 +136,11 @@ const checkStatus = (res: Response) => {
           )
         } catch (err) {
           errorKeys.push(file.Key)
+
           console.log(
             `(${errorKeys.length}) ${chalk.red('ERROR:')} ${file.Key}`
           )
-          console.error(err)
+          console.error(err.response)
         }
       }
     )

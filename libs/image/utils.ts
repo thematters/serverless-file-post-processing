@@ -44,6 +44,24 @@ export const sharpProcess = async ({
   )
 }
 
+export const changeExt = ({
+  key,
+  ext,
+}: {
+  key: string
+  ext?: IMAGE_FORMATS
+}) => {
+  const list = key.split('.')
+  const hasExt = list.length > 1
+  const newExt = ext || list.slice(-1)[0] || ''
+
+  if (hasExt) {
+    return key.replace(/\.[^.]+$/, `.${newExt}`)
+  }
+
+  return `${key}.${ext || ''}`
+}
+
 export const toProcessedKey = ({
   key,
   subFolder,
@@ -52,26 +70,4 @@ export const toProcessedKey = ({
   key: string
   subFolder: number | string
   ext?: IMAGE_FORMATS
-}) => {
-  const list = key.split('.')
-  const extension = ext || list.slice(-1)
-  const prefix = list.slice(0, list.length - 1).join('.')
-  const suffix = extension ? '.' + extension : ''
-
-  return `${IMAGE_FOLDER_OUT}/${subFolder}/${prefix}${suffix}`
-}
-
-export const toOriginalKey = ({
-  key,
-  ext,
-}: {
-  key: string
-  ext?: IMAGE_FORMATS
-}) => {
-  const list = key.split('.')
-  const extension = ext || list.slice(-1)
-  const prefix = list.slice(0, list.length - 1).join('.')
-  const suffix = extension ? '.' + extension : ''
-
-  return `${prefix}${suffix}`
-}
+}) => `${IMAGE_FOLDER_OUT}/${subFolder}/` + changeExt({ key, ext })
