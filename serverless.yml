@@ -45,6 +45,8 @@ functions:
       - http:
           method: POST
           path: /migrate
+    memorySize: 512
+    timeout: 20
 
   imageCreated:
     handler: handlers/image.created

@@ -48,12 +48,30 @@ export const migrate: APIGatewayProxyHandler = async (
 
   if (data.bucket !== bucket) {
     callback(new Error('"bucket" is invalid.'))
-    return
+    return {
+      statusCode: 400,
+      body: JSON.stringify(
+        {
+          message: '"bucket" is invalid.',
+        },
+        null,
+        2
+      ),
+    }
   }
 
   if (!data.key) {
     callback(new Error('"key" is required.'))
-    return
+    return {
+      statusCode: 400,
+      body: JSON.stringify(
+        {
+          message: '"key" is required.',
+        },
+        null,
+        2
+      ),
+    }
   }
 
   try {
@@ -65,10 +83,14 @@ export const migrate: APIGatewayProxyHandler = async (
   } catch (err) {
     console.error(err)
     callback(new Error(`Failed to process ${data.key}`))
-    return
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        message: `Failed to process ${data.key}`s
+      }, null, 2),
+    }
   }
 
-  // create a response
   return {
     statusCode: 200,
     body: JSON.stringify(data, null, 2),
