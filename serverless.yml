@@ -38,13 +38,13 @@ functions:
   imageMigrate:
     handler: handlers/image.migrate
     description: To migrate legacy images, the incremental images will be processed by "imageCreated" handler.
+    environment:
+      STAGE: ${self:provider.stage}
+      BUCKET: ${self:custom.bucket.${self:provider.stage}}
     events:
       - httpApi:
           method: POST
           path: /migrate
-          environment:
-            STAGE: ${self:provider.stage}
-            BUCKET: ${self:custom.bucket.${self:provider.stage}}
 
   imageCreated:
     handler: handlers/image.created
