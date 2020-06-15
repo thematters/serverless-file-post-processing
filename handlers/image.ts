@@ -85,9 +85,13 @@ export const migrate: APIGatewayProxyHandler = async (
     callback(new Error(`Failed to process ${data.key}`))
     return {
       statusCode: 400,
-      body: JSON.stringify({
-        message: `Failed to process ${data.key}`s
-      }, null, 2),
+      body: JSON.stringify(
+        {
+          message: `Failed to process ${data.key}`,
+        },
+        null,
+        2
+      ),
     }
   }
 
