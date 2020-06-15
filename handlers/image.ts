@@ -37,11 +37,7 @@ export const created: S3Handler = async (event, context) => {
  * @param event
  * @param context
  */
-export const migrate: APIGatewayProxyHandler = async (
-  event,
-  _context,
-  callback
-) => {
+export const migrate: APIGatewayProxyHandler = async (event) => {
   const s3 = new S3Service()
   const bucket = process.env.BUCKET
   const data = JSON.parse(event.body) as { bucket: string; key: string }
