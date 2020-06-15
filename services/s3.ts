@@ -112,7 +112,8 @@ export class S3Service {
     destBucket: string
     destKey: string
   }) => {
-    const src = `${srcBucket}/${srcKey}`
+    // const src = `${srcBucket}/${srcKey}`
+    const src = encodeURI(`${srcBucket}/${srcKey}`)
 
     console.log(`[COPY]: from ${src} to ${destBucket}/${destKey}`)
 

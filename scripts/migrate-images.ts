@@ -116,7 +116,8 @@ const checkStatus = (res: Response) => {
    */
   const s3 = new S3Service({ accessKeyId, secretAccessKey })
 
-  let counter = 1
+  const successKeys = []
+  const errorKeys = []
   const params = {
     bucket,
     prefix,
@@ -130,26 +131,24 @@ const checkStatus = (res: Response) => {
     await forEach(
       files.filter((f) => !f.Key.includes('.webp')),
       async (file) => {
-        counter++
-
         try {
-          const now = performance.now()
           const res = await fetch(migrationEndpoint, {
             method: 'post',
             body: JSON.stringify({ bucket, key: file.Key }),
             headers: { 'Content-Type': 'application/json' },
           })
           checkStatus(res)
-          const duration = now - performance.now()
+          successKeys.push(file.Key)
+
           console.log(
-            `(${counter}) ${chalk.green('SUCCESS:')} ${file.Key} ${chalk.grey(
-              duration + 'ms'
-            )}`
+            `(${successKeys.length}) ${chalk.green('SUCCESS:')} ${file.Key}`
           )
         } catch (err) {
-          console.log(`${chalk.red('ERROR:')} ${file.Key}`)
+          errorKeys.push(file.Key)
+          console.log(
+            `(${errorKeys.length}) ${chalk.red('ERROR:')} ${file.Key}`
+          )
           console.error(err)
-          throw err
         }
       }
     )
@@ -160,4 +159,7 @@ const checkStatus = (res: Response) => {
 
     params.after = next
   }
+
+  console.log(`${chalk.green(`${successKeys.length} items done.`)}`)
+  console.log(`${chalk.red(`${errorKeys.length} items failed:`)}`, errorKeys)
 })()
