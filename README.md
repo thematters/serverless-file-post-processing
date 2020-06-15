@@ -19,6 +19,14 @@ See [their docs](https://www.serverless.com/framework/docs/) for more details.
 
 Serverless App will be deployed automatically by [GitHub Actions](./.github/workflows/deploy.yml).
 
+## Migataion
+
+To migrate legacy images that unprocessed by the current version of Lambda function, please run:
+
+```bash
+npm run migrate:images
+```
+
 ## WARNING
 
 From [Configuring Amazon S3 event notifications](https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html):
