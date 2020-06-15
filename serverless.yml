@@ -42,7 +42,7 @@ functions:
       STAGE: ${self:provider.stage}
       BUCKET: ${self:custom.bucket.${self:provider.stage}}
     events:
-      - httpApi:
+      - http:
           method: POST
           path: /migrate
 
