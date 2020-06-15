@@ -5,7 +5,7 @@
   "license": "MIT",
   "main": "handler.js",
   "scripts": {
-    "fix:images": "ts-node scripts/s3-legacy-images.ts"
+    "migrate:images": "ts-node scripts/migrate-images.ts"
   },
   "dependencies": {
     "aws-sdk": "^2.692.0",
@@ -16,10 +16,12 @@
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
     "@types/node": "^10.12.18",
+    "@types/node-fetch": "^2.5.7",
     "@types/prompts": "^2.0.8",
     "@types/sharp": "^0.25.0",
     "chalk": "^4.1.0",
     "fork-ts-checker-webpack-plugin": "^3.0.1",
+    "node-fetch": "^2.6.0",
     "prettier": "^2.0.5",
     "prompts": "^2.3.2",
     "serverless-webpack": "^5.2.0",

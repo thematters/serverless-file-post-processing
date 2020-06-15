@@ -1,14 +1,13 @@
 /**
- * This script aims to process images that unprocessed
+ * This script aims to migrate images that unprocessed
  * by the current version of Lambda function.
  */
-
 import * as prompts from 'prompts'
 import * as chalk from 'chalk'
 import { forEach } from 'p-iteration'
+import fetch from 'node-fetch'
 
-import { processImage } from '../src/processors'
-import { S3Service } from '../src/services'
+import { S3Service } from '../services'
 
 const questions: Array<prompts.PromptObject> = [
   {
@@ -20,6 +19,11 @@ const questions: Array<prompts.PromptObject> = [
     type: 'password',
     name: 'secretAccessKey',
     message: 'Please enter AWS Secret Access Key:',
+  },
+  {
+    type: 'text',
+    name: 'migrationEndpoint',
+    message: 'Please enter the migration endpoint:',
   },
   {
     type: 'select',
@@ -78,6 +82,7 @@ const questions: Array<prompts.PromptObject> = [
   const {
     accessKeyId,
     secretAccessKey,
+    migrationEndpoint,
     bucket,
     prefix,
     count,
@@ -113,11 +118,18 @@ const questions: Array<prompts.PromptObject> = [
     const { files, next, hasNext } = await s3.listFiles(params)
 
     await forEach(files, async (file) => {
-      await processImage({
-        s3,
-        bucket,
-        key: file.Key,
-      })
+      try {
+        await fetch(migrationEndpoint, {
+          method: 'post',
+          body: JSON.stringify({ bucket, key: file.Key }),
+          headers: { 'Content-Type': 'application/json' },
+        })
+        console.log(`${chalk.green('SUCCESS: ')} ${file.Key}`)
+      } catch (err) {
+        console.log(`${chalk.red('ERROR: ')} ${file.Key}`)
+        console.error(err)
+        throw err
+      }
     })
 
     if (!hasNext) {

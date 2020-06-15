@@ -1,6 +1,6 @@
 import { forEach } from 'p-iteration'
 
-import { sharpProcess, toProcessedKey, toOriginalKey } from '../libs/image'
+import { sharpProcess, toProcessedKey, toOriginalKey } from './utils'
 import {
   IMAGE_FOLDER_OUT,
   IMAGE_SIZES,
@@ -10,8 +10,8 @@ import {
   IMAGE_FORMATS,
   TAG_VERSION_KEY,
   TAG_VERSION_VALUE,
-} from '../enum'
-import { S3Service } from '../services'
+} from '../../enum'
+import { S3Service } from '../../services'
 
 export const processImage = async ({
   s3,
