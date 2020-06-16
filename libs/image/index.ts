@@ -208,9 +208,12 @@ export const deleteProcessedImages = async ({
       ext: IMAGE_FORMATS.webp,
     })
   )
+  const keys = [originalKeyWebP, ...thumbnailKeys, ...thumbnailKeysWebP]
+    // To avoid execution loop
+    .filter((k) => k !== key)
 
   return s3.deleteFiles({
     bucket,
-    keys: [originalKeyWebP, ...thumbnailKeys, ...thumbnailKeysWebP],
+    keys,
   })
 }
