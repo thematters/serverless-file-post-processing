@@ -32,3 +32,11 @@ npm run migrate:images
 From [Configuring Amazon S3 event notifications](https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html):
 
 > If your notification ends up writing to the bucket that triggers the notification, this could cause an execution loop. For example, if the bucket triggers a Lambda function each time an object is uploaded, and the function uploads an object to the bucket, then the function indirectly triggers itself. To avoid this, use two buckets, or configure the trigger to only apply to a prefix used for incoming objects.
+
+## Troubleshooting
+
+If you are facing the following error, try to [delete enabled S3 events](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/enable-event-notifications.html) first.
+
+```
+An error occurred: *****CustomS31 - Failed to create resource. Unable to validate the following destination configurations
+```
