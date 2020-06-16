@@ -129,7 +129,7 @@ export class S3Service {
   }
 
   /**
-   * Delete file from AWS S3 by a given path key.
+   * Delete file(s) from AWS S3 by a given path key.
    */
   deleteFile = async ({ bucket, key }: { bucket: string; key: string }) => {
     console.log(`[DELETE]: ${key}`)
@@ -138,6 +138,26 @@ export class S3Service {
       .deleteObject({
         Bucket: bucket,
         Key: key,
+      })
+      .promise()
+  }
+
+  deleteFiles = async ({
+    bucket,
+    keys,
+  }: {
+    bucket: string
+    keys: string[]
+  }) => {
+    console.log(`[DELETE]: ${keys.join(', ')}`)
+
+    return this.s3
+      .deleteObjects({
+        Bucket: bucket,
+        Delete: {
+          Objects: keys.map((key) => ({ Key: key })),
+          // Quiet: true,
+        },
       })
       .promise()
   }

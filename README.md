@@ -7,7 +7,7 @@ Post processing files uploaded to S3
 ### Image Processing
 
 - Resize & compress images uploaded to AWS S3
-- TODO: Delete (versioned) thumbnails after original image is deleted from AWS S3
+- Delete thumbnails when the original image is deleted
 
 ## Development
 

@@ -13,6 +13,12 @@ import {
 } from '../../enum'
 import { S3Service } from '../../services'
 
+/**
+ * Process the original image to:
+ *
+ * 1) Compress
+ * 2) Generate thumbnails include WebP versions
+ */
 export const processImage = async ({
   s3,
   bucket,
@@ -129,7 +135,7 @@ export const processImage = async ({
   })
 
   /**
-   * Resizing Images
+   * Thumbnails
    */
   return forEach(sizes, async (size) => {
     const subFolder = `${size.width}w`
@@ -162,5 +168,49 @@ export const processImage = async ({
         ext: IMAGE_FORMATS.webp,
       }),
     })
+  })
+}
+
+/**
+ * Delete thumbnails
+ */
+export const deleteProcessedImages = async ({
+  s3,
+  bucket,
+  key,
+}: {
+  s3: S3Service
+  bucket: string
+  key: string
+}) => {
+  console.log(`[DELETING]: thumbnails of ${key}`)
+
+  const regexp = new RegExp(`(${Object.values(IMAGE_TYPES).join('|')})\/`)
+  const type = key.match(regexp)[1]
+  const sizes = IMAGE_SIZES[type] as IMAGE_SIZE[]
+
+  if (!sizes) {
+    console.log(`[SKIP]: ${key} it's supported`)
+    return
+  }
+
+  const originalKeyWebP = changeExt({
+    key,
+    ext: IMAGE_FORMATS.webp,
+  })
+  const thumbnailKeys = sizes.map((size) =>
+    toProcessedKey({ key, subFolder: `${size.width}w` })
+  )
+  const thumbnailKeysWebP = sizes.map((size) =>
+    toProcessedKey({
+      key,
+      subFolder: `${size.width}w`,
+      ext: IMAGE_FORMATS.webp,
+    })
+  )
+
+  return s3.deleteFiles({
+    bucket,
+    keys: [originalKeyWebP, ...thumbnailKeys, ...thumbnailKeysWebP],
   })
 }
