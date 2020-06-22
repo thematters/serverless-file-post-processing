@@ -4,7 +4,7 @@ Post processing files uploaded to S3
 
 ## Use Cases
 
-### Image Processing
+### [Image Processing](https://github.com/thematters/matters-server/issues/1128)
 
 - Resize & compress images uploaded to AWS S3
 - Delete thumbnails when the original image is deleted
