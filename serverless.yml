@@ -96,5 +96,5 @@ functions:
           event: s3:ObjectRemoved:DeleteMarkerCreated
           rules:
             - prefix: embed/
-    memorySize: 512
+    memorySize: 192
     timeout: 10
