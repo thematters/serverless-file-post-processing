@@ -81,19 +81,19 @@ functions:
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
-          event: s3:ObjectRemoved:*
+          event: s3:ObjectRemoved:Delete
           rules:
             - prefix: avatar/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
-          event: s3:ObjectRemoved:*
+          event: s3:ObjectRemoved:Delete
           rules:
             - prefix: profileCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
-          event: s3:ObjectRemoved:*
+          event: s3:ObjectRemoved:Delete
           rules:
             - prefix: embed/
     memorySize: 512
