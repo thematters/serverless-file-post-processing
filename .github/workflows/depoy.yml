@@ -1,10 +1,14 @@
-name: Deploy
+name: Deployment
 
 on:
   push:
     branches:
       - master
       - develop
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
 jobs:
   deploy:
@@ -38,10 +42,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Slack Notification
+        if: always()
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           author_name: serverless-file-post-processing
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-        if: always()
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
