@@ -71,6 +71,11 @@ const questions: Array<prompts.PromptObject> = [
     max: 1000,
   },
   {
+    type: 'text',
+    name: 'after',
+    message: 'The starting point (ContinuationToken) for listing files:',
+  },
+  {
     type: 'confirm',
     name: 'readyToStart',
     message: 'Ready to start?',
@@ -86,6 +91,7 @@ const questions: Array<prompts.PromptObject> = [
     bucket,
     prefix,
     count,
+    after,
     readyToStart,
   } = await prompts(questions)
 
@@ -113,7 +119,7 @@ const questions: Array<prompts.PromptObject> = [
     bucket,
     prefix,
     count,
-    after: undefined,
+    after: after || undefined,
   }
 
   for (;;) {
@@ -126,7 +132,7 @@ const questions: Array<prompts.PromptObject> = [
           const data = { bucket, key: file.Key }
 
           await axios.post(migrationEndpoint, data, {
-            timeout: 10000,
+            timeout: 30000,
           })
 
           successKeys.push(file.Key)
