@@ -1,0 +1,50 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+jobs:
+  deploy:
+    name: Deploy Serverless Functions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+
+      - name: Install Dependencies
+        run: npm install
+
+      # Develop
+      - name: Deploy (devlop)
+        uses: serverless/github-action@master
+        if: github.ref == 'refs/heads/develop'
+        with:
+          args: deploy --stage develop --force --verbose
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Production
+      - name: Deploy (production)
+        uses: serverless/github-action@master
+        if: github.ref == 'refs/heads/master'
+        with:
+          args: deploy --stage production --force --verbose
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Slack Notification
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: serverless-file-post-processing
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took

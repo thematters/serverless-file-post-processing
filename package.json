@@ -1,0 +1,50 @@
+{
+  "name": "serverless-file-post-processing",
+  "version": "0.1.0",
+  "description": "Post processing files uploaded to AWS S3 by AWS Lambda",
+  "license": "MIT",
+  "main": "handler.js",
+  "scripts": {
+    "migrate:images": "ts-node scripts/migrate-images.ts"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.692.0",
+    "p-iteration": "^1.1.8",
+    "sharp": "^0.25.3",
+    "source-map-support": "^0.5.10"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.17",
+    "@types/node": "^10.12.18",
+    "@types/prompts": "^2.0.8",
+    "@types/sharp": "^0.25.0",
+    "axios": "^0.19.2",
+    "chalk": "^4.1.0",
+    "commitizen": "^4.1.2",
+    "cz-conventional-changelog": "^3.2.0",
+    "fork-ts-checker-webpack-plugin": "^3.0.1",
+    "husky": "^4.2.5",
+    "prettier": "^2.0.5",
+    "prompts": "^2.3.2",
+    "serverless-webpack": "^5.2.0",
+    "ts-loader": "^5.3.3",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.2.4",
+    "webpack": "^4.29.0",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

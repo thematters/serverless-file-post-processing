@@ -1,0 +1,100 @@
+service:
+  name: file-post-processing
+
+custom:
+  bucket:
+    develop: matters-server-stage
+    production: matters-server-production
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  region: ap-southeast-1
+  runtime: nodejs12.x
+  memorySize: 512
+  timeout: 6
+  versionFunctions: false
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: 'arn:aws:s3:::${self:custom.bucket.${self:provider.stage}}/*'
+  stage: ${opt:stage, 'develop'}
+  # httpApi:
+  #   authorizers:
+  #     authorizer:
+  #       identitySource: $request.header.Authorization
+  #       issuerUrl: https://cognito-idp.${region}.amazonaws.com/${cognitoPoolId}
+  #       audience:
+  #         - ${client1Id}
+  #         - ${client2Id}
+
+functions:
+  imageMigrate:
+    handler: handlers/image.migrate
+    description: To migrate legacy images, the incremental images will be processed by "imageCreated" handler.
+    environment:
+      STAGE: ${self:provider.stage}
+      BUCKET: ${self:custom.bucket.${self:provider.stage}}
+    events:
+      - http:
+          method: POST
+          path: /migrate
+    memorySize: 512
+    timeout: 20
+
+  imageCreated:
+    handler: handlers/image.created
+    description: To resize & compress images which newly added to a specific folders.
+    events:
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          # NOTE: to avoid execution loop, only receive event on object created
+          event: s3:ObjectCreated:Put
+          rules:
+            - prefix: avatar/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectCreated:Put
+          rules:
+            - prefix: profileCover/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectCreated:Put
+          rules:
+            - prefix: embed/
+    memorySize: 2048
+    timeout: 10
+
+  imageDeleted:
+    handler: handlers/image.deleted
+    description: To delete thumbnails created by "imageCreated" when the original image is deleted.
+    events:
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectRemoved:DeleteMarkerCreated
+          rules:
+            - prefix: avatar/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectRemoved:DeleteMarkerCreated
+          rules:
+            - prefix: profileCover/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectRemoved:DeleteMarkerCreated
+          rules:
+            - prefix: embed/
+    memorySize: 192
+    timeout: 10
