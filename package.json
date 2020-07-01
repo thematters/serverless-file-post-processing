@@ -1,6 +1,6 @@
 {
   "name": "serverless-file-post-processing",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Post processing files uploaded to AWS S3 by AWS Lambda",
   "license": "MIT",
   "main": "handler.js",
@@ -20,7 +20,10 @@
     "@types/sharp": "^0.25.0",
     "axios": "^0.19.2",
     "chalk": "^4.1.0",
+    "commitizen": "^4.1.2",
+    "cz-conventional-changelog": "^3.2.0",
     "fork-ts-checker-webpack-plugin": "^3.0.1",
+    "husky": "^4.2.5",
     "prettier": "^2.0.5",
     "prompts": "^2.3.2",
     "serverless-webpack": "^5.2.0",
@@ -30,8 +33,18 @@
     "webpack": "^4.29.0",
     "webpack-node-externals": "^1.7.2"
   },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+    }
+  },
   "prettier": {
     "singleQuote": true,
     "semi": false
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
