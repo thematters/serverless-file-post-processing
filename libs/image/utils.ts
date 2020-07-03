@@ -59,7 +59,7 @@ export const changeExt = ({
     return key.replace(/\.[^.]+$/, `.${newExt}`)
   }
 
-  return `${key}.${ext || ''}`
+  return `${key}${ext ? '.' + ext : ''}`
 }
 
 export const toProcessedKey = ({
