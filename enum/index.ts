@@ -21,13 +21,12 @@ export enum IMAGE_TYPES {
 }
 
 /**
- * Supported image formats
+ * Supported image filename extension
  */
-export enum IMAGE_FORMATS {
+export enum IMAGE_EXTS {
   jpg = 'jpg',
   jpeg = 'jpeg',
   gif = 'gif',
-  svg = 'svg',
   webp = 'webp',
   png = 'png',
 }
