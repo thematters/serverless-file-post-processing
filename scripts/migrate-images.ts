@@ -2,6 +2,7 @@
  * This script aims to migrate images that unprocessed
  * by the current version of Lambda function.
  */
+import * as fs from 'fs'
 import * as prompts from 'prompts'
 import * as chalk from 'chalk'
 import { forEach } from 'p-iteration'
@@ -152,6 +153,21 @@ const questions: Array<prompts.PromptObject> = [
     params.after = next
   }
 
+  // log results
   console.log(`${chalk.green(`${successKeys.length} items done.`)}`)
-  console.log(`${chalk.red(`${errorKeys.length} items failed:`)}`, errorKeys)
+  console.log(
+    `${chalk.red(`${errorKeys.length} items failed:`)}`,
+    JSON.stringify(errorKeys, null, 2)
+  )
+
+  // write to `logs`
+  const now = Date.now()
+  if (!fs.existsSync('./logs')) {
+    fs.mkdirSync('./logs')
+  }
+  fs.writeFileSync(
+    `./logs/migration-${now}-success.txt`,
+    successKeys.join('\n')
+  )
+  fs.writeFileSync(`./logs/migration-${now}-error.txt`, successKeys.join('\n'))
 })()

@@ -214,6 +214,6 @@ export const deleteProcessedImages = async ({
 
   return s3.deleteFiles({
     bucket,
-    keys,
+    objects: keys.map((key) => ({ key })),
   })
 }

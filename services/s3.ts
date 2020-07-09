@@ -52,6 +52,28 @@ export class S3Service {
   }
 
   /**
+   * List file versions
+   */
+  listFileVersions = async ({
+    bucket,
+    prefix,
+  }: {
+    bucket: string
+    prefix: string
+  }) => {
+    console.log(`[LIST-VERSIONS]: bucket:${bucket}, prefix:${prefix}`)
+
+    const result = await this.s3
+      .listObjectVersions({
+        Bucket: bucket,
+        Prefix: prefix,
+      })
+      .promise()
+
+    return result.Versions.map(({ VersionId }) => VersionId)
+  }
+
+  /**
    * Read file by the given bucket and key
    */
   getFile = async ({ bucket, key }: { bucket: string; key: string }) => {
@@ -144,18 +166,27 @@ export class S3Service {
 
   deleteFiles = async ({
     bucket,
-    keys,
+    objects,
   }: {
     bucket: string
-    keys: string[]
+    objects: { key: string; versionId?: string }[]
   }) => {
-    console.log(`[DELETE]: ${keys.join(', ')}`)
+    console.log(
+      `[DELETE]: ${objects
+        .map(
+          ({ key, versionId }) => `${key}${versionId ? ':' + versionId : ''}`
+        )
+        .join(', ')}`
+    )
 
     return this.s3
       .deleteObjects({
         Bucket: bucket,
         Delete: {
-          Objects: keys.map((key) => ({ Key: key })),
+          Objects: objects.map(({ key, versionId }) => ({
+            Key: key,
+            VersionId: versionId,
+          })),
           // Quiet: true,
         },
       })

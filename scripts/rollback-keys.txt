@@ -1,0 +1,4 @@
+avatar/example1.gif
+avatar/example2.gif
+avatar/example3.gif
+avatar/example4.gif
