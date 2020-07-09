@@ -3,6 +3,7 @@
  * due to sharp.js can't properly process animated GIFs.
  *
  * @see {@url https://github.com/lovell/sharp/issues/245}
+ * @see {@url https://docs.aws.amazon.com/AmazonS3/latest/dev/DeletingObjectVersions.html}
  */
 import * as prompts from 'prompts'
 import * as chalk from 'chalk'
