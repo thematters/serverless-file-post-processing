@@ -56,21 +56,23 @@ export class S3Service {
    */
   listFileVersions = async ({
     bucket,
-    prefix,
+    key,
   }: {
     bucket: string
-    prefix: string
+    key: string
   }) => {
-    console.log(`[LIST-VERSIONS]: bucket:${bucket}, prefix:${prefix}`)
+    console.log(`[LIST-VERSIONS]: bucket:${bucket}, key:${key}`)
 
     const result = await this.s3
       .listObjectVersions({
         Bucket: bucket,
-        Prefix: prefix,
+        Prefix: key,
       })
       .promise()
 
-    return result.Versions.map(({ VersionId }) => VersionId)
+    return result.Versions.filter(({ Key }) => Key === key).map(
+      ({ VersionId }) => VersionId
+    )
   }
 
   /**

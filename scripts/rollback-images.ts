@@ -120,7 +120,7 @@ const questions: Array<prompts.PromptObject> = [
     // gather key-versionId objects
     await forEach(keys, async (key) => {
       try {
-        const versions = await s3.listFileVersions({ bucket, prefix: key })
+        const versions = await s3.listFileVersions({ bucket, key })
 
         // skip if the object already the latest version
         if (versions.length <= 1) {
