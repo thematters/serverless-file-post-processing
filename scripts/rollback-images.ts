@@ -132,9 +132,7 @@ const questions: Array<prompts.PromptObject> = [
         const versionToBeDeleted = versions[0]
         objects.push({ key, versionId: versionToBeDeleted })
         console.log(
-          `${chalk.green(
-            'PUSHED:'
-          )} key: ${key}, version: ${versionToBeDeleted}`
+          `${chalk.blue('PUSHED:')} key: ${key}, version: ${versionToBeDeleted}`
         )
       } catch (err) {
         errorKeys.push(key)
@@ -142,6 +140,10 @@ const questions: Array<prompts.PromptObject> = [
         console.error(err.response)
       }
     })
+
+    if (objects.length <= 0) {
+      return
+    }
 
     // batch delete versioned objects
     try {
@@ -187,6 +189,7 @@ const questions: Array<prompts.PromptObject> = [
     fs.mkdirSync('./logs')
   }
   fs.writeFileSync(`./logs/rollback-${now}-success.txt`, successKeys.join('\n'))
-  fs.writeFileSync(`./logs/rollback-${now}-skipped.txt`, successKeys.join('\n'))
-  fs.writeFileSync(`./logs/rollback-${now}-error.txt`, successKeys.join('\n'))
+  fs.writeFileSync(`./logs/rollback-${now}-skipped.txt`, skippedKeys.join('\n'))
+  fs.writeFileSync(`./logs/rollback-${now}-error.txt`, errorKeys.join('\n'))
+  console.log(`See "./logs/rollback-${now}-*.txt" for full logs.`)
 })()

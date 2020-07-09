@@ -169,5 +169,6 @@ const questions: Array<prompts.PromptObject> = [
     `./logs/migration-${now}-success.txt`,
     successKeys.join('\n')
   )
-  fs.writeFileSync(`./logs/migration-${now}-error.txt`, successKeys.join('\n'))
+  fs.writeFileSync(`./logs/migration-${now}-error.txt`, errorKeys.join('\n'))
+  console.log(`See "./logs/rollback-${now}-*.txt" for full logs.`)
 })()
