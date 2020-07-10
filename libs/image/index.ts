@@ -7,7 +7,7 @@ import {
   IMAGE_TYPES,
   IMAGE_WIDTH_LIMIT,
   IMAGE_SIZE,
-  IMAGE_FORMATS,
+  IMAGE_EXTS,
   TAG_VERSION_KEY,
   TAG_VERSION_VALUE,
 } from '../../enum'
@@ -37,9 +37,14 @@ export const processImage = async ({
 
   /**
    * Check if it's supported
+   *
+   * 👌 `avatar/filename.png`
+   * 👌 `avatar/filename-png`
+   * 👌 `avatar/filename.PNG`
    */
-  const isSupported =
-    Object.values(IMAGE_FORMATS).indexOf(key.split('.').pop() as any) >= 0
+  const isSupported = Object.values(IMAGE_EXTS).some((format) =>
+    new RegExp(`[\-\.]${format}$`, 'i').test(key)
+  )
   const regexp = new RegExp(`(${Object.values(IMAGE_TYPES).join('|')})\/`)
   const type = key.match(regexp)[1]
   const sizes = IMAGE_SIZES[type] as IMAGE_SIZE[]
@@ -75,6 +80,7 @@ export const processImage = async ({
   // non-WebP
   console.log(`[PROCESSING]: ${key}@original`)
   const isOriginalWebP = /webp/i.test(contentType)
+  const isOriginalGIF = /gif/i.test(contentType)
   const originalContentType = isOriginalWebP ? 'image/jpeg' : contentType
   const original = await sharpProcess({
     buffer: file,
@@ -84,21 +90,29 @@ export const processImage = async ({
     },
   })
 
-  // NOTE: To avoid execution loop,
-  // we can't directly upload the image to the original folder
-  const processedKey = toProcessedKey({ key, subFolder: '_temp' })
-  await s3.uploadFile({
-    ...baseUploadProps,
-    body: original,
-    contentType: originalContentType,
-    key: processedKey,
-  })
-  await s3.moveFile({
-    srcBucket: bucket,
-    srcKey: processedKey,
-    destBucket: bucket,
-    destKey: key,
-  })
+  /**
+   * FIXME: stop overwrite original GIF
+   * since sharp.js can't properly process animated GIFs.
+   *
+   * @see {@url https://github.com/lovell/sharp/issues/245}
+   * */
+  if (!isOriginalGIF) {
+    // NOTE: To avoid execution loop,
+    // we can't directly upload the image to the original folder
+    const processedKey = toProcessedKey({ key, subFolder: '_temp' })
+    await s3.uploadFile({
+      ...baseUploadProps,
+      body: original,
+      contentType: originalContentType,
+      key: processedKey,
+    })
+    await s3.moveFile({
+      srcBucket: bucket,
+      srcKey: processedKey,
+      destBucket: bucket,
+      destKey: key,
+    })
+  }
 
   /// WebP
   console.log(`[PROCESSING]: ${key}@original/webp`)
@@ -115,11 +129,11 @@ export const processImage = async ({
   const processedKeyWebP = toProcessedKey({
     key,
     subFolder: '_temp',
-    ext: IMAGE_FORMATS.webp,
+    ext: IMAGE_EXTS.webp,
   })
   const originalKeyWebP = changeExt({
     key,
-    ext: IMAGE_FORMATS.webp,
+    ext: IMAGE_EXTS.webp,
   })
   await s3.uploadFile({
     ...baseUploadProps,
@@ -165,7 +179,7 @@ export const processImage = async ({
       key: toProcessedKey({
         key,
         subFolder,
-        ext: IMAGE_FORMATS.webp,
+        ext: IMAGE_EXTS.webp,
       }),
     })
   })
@@ -196,7 +210,7 @@ export const deleteProcessedImages = async ({
 
   const originalKeyWebP = changeExt({
     key,
-    ext: IMAGE_FORMATS.webp,
+    ext: IMAGE_EXTS.webp,
   })
   const thumbnailKeys = sizes.map((size) =>
     toProcessedKey({ key, subFolder: `${size.width}w` })
@@ -205,7 +219,7 @@ export const deleteProcessedImages = async ({
     toProcessedKey({
       key,
       subFolder: `${size.width}w`,
-      ext: IMAGE_FORMATS.webp,
+      ext: IMAGE_EXTS.webp,
     })
   )
   const keys = [originalKeyWebP, ...thumbnailKeys, ...thumbnailKeysWebP]
@@ -214,6 +228,6 @@ export const deleteProcessedImages = async ({
 
   return s3.deleteFiles({
     bucket,
-    keys,
+    objects: keys.map((key) => ({ key })),
   })
 }
