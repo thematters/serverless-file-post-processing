@@ -165,7 +165,10 @@ const questions: Array<prompts.PromptObject> = [
   if (!fs.existsSync('./logs')) {
     fs.mkdirSync('./logs')
   }
-  fs.writeFileSync(`./logs/migrate-${now}-success.txt`, successKeys.join('\n'))
-  fs.writeFileSync(`./logs/migrate-${now}-error.txt`, errorKeys.join('\n'))
-  console.log(`See "./logs/migrate-${now}-*.txt" for full logs.`)
+  fs.writeFileSync(
+    `./logs/migration-${now}-success.txt`,
+    successKeys.join('\n')
+  )
+  fs.writeFileSync(`./logs/migration-${now}-error.txt`, errorKeys.join('\n'))
+  console.log(`See "./logs/rollback-${now}-*.txt" for full logs.`)
 })()

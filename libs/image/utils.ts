@@ -1,6 +1,6 @@
 import * as sharp from 'sharp'
 
-import { IMAGE_FOLDER_OUT, IMAGE_FORMATS } from '../../enum'
+import { IMAGE_FOLDER_OUT, IMAGE_EXTS } from '../../enum'
 
 export const sharpProcess = async ({
   buffer,
@@ -44,13 +44,7 @@ export const sharpProcess = async ({
   )
 }
 
-export const changeExt = ({
-  key,
-  ext,
-}: {
-  key: string
-  ext?: IMAGE_FORMATS
-}) => {
+export const changeExt = ({ key, ext }: { key: string; ext?: IMAGE_EXTS }) => {
   const list = key.split('.')
   const hasExt = list.length > 1
   const newExt = ext || list.slice(-1)[0] || ''
@@ -69,5 +63,5 @@ export const toProcessedKey = ({
 }: {
   key: string
   subFolder: number | string
-  ext?: IMAGE_FORMATS
+  ext?: IMAGE_EXTS
 }) => `${IMAGE_FOLDER_OUT}/${subFolder}/` + changeExt({ key, ext })

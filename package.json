@@ -6,6 +6,7 @@
   "main": "handler.js",
   "scripts": {
     "migrate:images": "ts-node scripts/migrate-images.ts",
+    "migrate:images:keys": "ts-node scripts/migrate-keys-images.ts",
     "rollback:images": "ts-node scripts/rollback-images.ts"
   },
   "dependencies": {
