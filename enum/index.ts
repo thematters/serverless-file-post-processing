@@ -57,6 +57,7 @@ export const IMAGE_SIZES: {
   ],
   tagCover: [
     { width: 144, height: 144 },
+    { width: 360, height: null },
     { width: 540, height: null },
     { width: 1080, height: null },
   ]
