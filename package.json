@@ -1,6 +1,7 @@
 {
   "name": "serverless-file-post-processing",
-  "version": "0.2.0",
+  "version": "0.3.0",
+  "author": "Matters <hi@matters.news>",
   "description": "Post processing files uploaded to AWS S3 by AWS Lambda",
   "license": "MIT",
   "main": "handler.js",
