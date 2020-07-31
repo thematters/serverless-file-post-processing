@@ -17,6 +17,8 @@ export const sharpProcess = async ({
 }) => {
   return (
     sharp(buffer)
+      // auto-orient based on the EXIF `Orientation` tag
+      .rotate()
       // convert format & compress
       .jpeg({
         quality: 80,
