@@ -20,8 +20,8 @@ const questions: Array<prompts.PromptObject> = [
     message: 'Select the target bucket:',
     choices: [
       {
-        title: 'matters-server-stage',
-        value: 'matters-server-stage',
+        title: 'matters-server-develop',
+        value: 'matters-server-develop',
         description: '(develop)',
       },
       {
