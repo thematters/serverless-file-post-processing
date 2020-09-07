@@ -18,8 +18,17 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
 
+      - name: Cache Dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       # Develop
       - name: Deploy (devlop)

@@ -6,6 +6,7 @@
   "license": "MIT",
   "main": "handler.js",
   "scripts": {
+    "build": "sls package",
     "migrate:images": "ts-node scripts/migrate-images.ts",
     "migrate:images:keys": "ts-node scripts/migrate-keys-images.ts",
     "rollback:images": "ts-node scripts/rollback-images.ts"
@@ -31,6 +32,7 @@
     "lodash": "^4.17.19",
     "prettier": "^2.0.5",
     "prompts": "^2.3.2",
+    "serverless": "^1.81.1",
     "serverless-webpack": "^5.3.3",
     "ts-loader": "^8.0.1",
     "ts-node": "^8.10.2",
