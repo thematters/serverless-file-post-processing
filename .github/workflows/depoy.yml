@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - develop
+      - stage
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,6 +37,16 @@ jobs:
         if: github.ref == 'refs/heads/develop'
         with:
           args: deploy --stage develop --force --verbose
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Stage
+      - name: Deploy (stage)
+        uses: serverless/github-action@master
+        if: github.ref == 'refs/heads/stage'
+        with:
+          args: deploy --stage stage --force --verbose
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

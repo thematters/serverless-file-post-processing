@@ -4,6 +4,7 @@ service:
 custom:
   bucket:
     develop: matters-server-develop
+    stage: matters-server-stage
     production: matters-server-production
   webpack:
     webpackConfig: ./webpack.config.js
