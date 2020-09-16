@@ -25,6 +25,11 @@ const questions: Array<prompts.PromptObject> = [
         description: '(develop)',
       },
       {
+        title: 'matters-server-stage',
+        value: 'matters-server-stage',
+        description: '(stage)',
+      },
+      {
         title: 'matters-server-production',
         value: 'matters-server-production',
         description: '(production)',
