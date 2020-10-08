@@ -18,6 +18,7 @@ export enum IMAGE_TYPES {
   avatar = 'avatar',
   profileCover = 'profileCover',
   embed = 'embed',
+  cover = 'cover',
   tagCover = 'tagCover',
 }
 
@@ -49,6 +50,12 @@ export const IMAGE_SIZES: {
     { width: 540, height: null },
     { width: 1080, height: null },
   ],
+  cover: [
+    { width: 144, height: 144 },
+    { width: 360, height: null },
+    { width: 540, height: null },
+    { width: 1080, height: null },
+  ],
   embed: [
     { width: 144, height: 144 },
     { width: 360, height: null },
@@ -60,5 +67,5 @@ export const IMAGE_SIZES: {
     { width: 360, height: null },
     { width: 540, height: null },
     { width: 1080, height: null },
-  ]
+  ],
 }
