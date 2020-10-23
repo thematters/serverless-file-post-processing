@@ -1,27 +1,28 @@
 {
   "name": "serverless-file-post-processing",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": "Matters <hi@matters.news>",
   "description": "Post processing files uploaded to AWS S3 by AWS Lambda",
   "license": "MIT",
   "main": "handler.js",
   "scripts": {
+    "build": "sls package",
     "migrate:images": "ts-node scripts/migrate-images.ts",
     "migrate:images:keys": "ts-node scripts/migrate-keys-images.ts",
     "rollback:images": "ts-node scripts/rollback-images.ts"
   },
   "dependencies": {
-    "aws-sdk": "^2.722.0",
+    "aws-sdk": "^2.724.0",
     "p-iteration": "^1.1.8",
     "sharp": "^0.25.4",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.59",
-    "@types/lodash": "^4.14.157",
-    "@types/node": "^10.12.18",
+    "@types/lodash": "^4.14.158",
+    "@types/node": "^14.0.27",
     "@types/prompts": "^2.0.8",
-    "@types/sharp": "^0.25.0",
+    "@types/sharp": "^0.25.1",
     "axios": "^0.19.2",
     "chalk": "^4.1.0",
     "commitizen": "^4.1.2",
@@ -31,11 +32,12 @@
     "lodash": "^4.17.19",
     "prettier": "^2.0.5",
     "prompts": "^2.3.2",
+    "serverless": "^1.81.1",
     "serverless-webpack": "^5.3.3",
     "ts-loader": "^8.0.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7",
-    "webpack": "^4.44.0",
+    "webpack": "^4.44.1",
     "webpack-node-externals": "^2.5.0"
   },
   "husky": {

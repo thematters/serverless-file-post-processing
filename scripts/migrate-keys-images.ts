@@ -20,9 +20,14 @@ const questions: Array<prompts.PromptObject> = [
     message: 'Select the target bucket:',
     choices: [
       {
+        title: 'matters-server-develop',
+        value: 'matters-server-develop',
+        description: '(develop)',
+      },
+      {
         title: 'matters-server-stage',
         value: 'matters-server-stage',
-        description: '(develop)',
+        description: '(stage)',
       },
       {
         title: 'matters-server-production',
@@ -78,7 +83,7 @@ const questions: Array<prompts.PromptObject> = [
     .filter((k) => !!k)
   const chunks = _.chunk(keys, count)
 
-  const validFolders = ['avatar/', 'embed/', 'profileCover/']
+  const validFolders = ['avatar/', 'cover/', 'embed/', 'profileCover/']
   keys.forEach((key) => {
     const isValid = validFolders.some((folder) => key.indexOf(folder) >= 0)
     if (!isValid) {
