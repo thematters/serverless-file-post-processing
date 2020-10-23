@@ -77,6 +77,12 @@ functions:
           existing: true
           event: s3:ObjectCreated:Put
           rules:
+            - prefix: cover/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectCreated:Put
+          rules:
             - prefix: tagCover/
     memorySize: 2048
     timeout: 10
@@ -103,6 +109,12 @@ functions:
           event: s3:ObjectRemoved:DeleteMarkerCreated
           rules:
             - prefix: embed/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectRemoved:DeleteMarkerCreated
+          rules:
+            - prefix: cover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
