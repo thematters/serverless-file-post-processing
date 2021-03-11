@@ -20,6 +20,8 @@ export enum IMAGE_TYPES {
   embed = 'embed',
   cover = 'cover',
   tagCover = 'tagCover',
+  circleAvatar = 'circleAvatar',
+  circleCover = 'circleCover',
 }
 
 /**
@@ -63,6 +65,13 @@ export const IMAGE_SIZES: {
     { width: 1080, height: null },
   ],
   tagCover: [
+    { width: 144, height: 144 },
+    { width: 360, height: null },
+    { width: 540, height: null },
+    { width: 1080, height: null },
+  ],
+  circleAvatar: [{ width: 144, height: 144 }],
+  circleCover: [
     { width: 144, height: 144 },
     { width: 360, height: null },
     { width: 540, height: null },
