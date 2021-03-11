@@ -1,6 +1,6 @@
 {
   "name": "serverless-file-post-processing",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": "Matters <hi@matters.news>",
   "description": "Post processing files uploaded to AWS S3 by AWS Lambda",
   "license": "MIT",
@@ -34,7 +34,7 @@
     "prompts": "^2.3.2",
     "serverless": "^1.81.1",
     "serverless-webpack": "^5.3.3",
-    "ts-loader": "^8.0.1",
+    "ts-loader": "^8.0.18",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7",
     "webpack": "^4.44.1",
