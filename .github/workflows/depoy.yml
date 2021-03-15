@@ -1,11 +1,13 @@
 name: Deployment
 
 on:
-  push:
+  pull_request:
     branches:
       - master
       - develop
       - stage
+    types:
+      - closed
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -13,6 +15,7 @@ env:
 
 jobs:
   deploy:
+    if: github.event.pull_request.merged == true
     name: Deploy Serverless Functions
     runs-on: ubuntu-latest
     steps:
@@ -34,7 +37,7 @@ jobs:
       # Develop
       - name: Deploy (devlop)
         uses: serverless/github-action@master
-        if: github.ref == 'refs/heads/develop'
+        if: github.base_ref == 'develop'
         with:
           args: deploy --stage develop --force --verbose
         env:
@@ -44,7 +47,7 @@ jobs:
       # Stage
       - name: Deploy (stage)
         uses: serverless/github-action@master
-        if: github.ref == 'refs/heads/stage'
+        if: github.base_ref == 'stage'
         with:
           args: deploy --stage stage --force --verbose
         env:
@@ -54,7 +57,7 @@ jobs:
       # Production
       - name: Deploy (production)
         uses: serverless/github-action@master
-        if: github.ref == 'refs/heads/master'
+        if: github.base_ref == 'master'
         with:
           args: deploy --stage production --force --verbose
         env:
