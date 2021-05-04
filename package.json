@@ -12,7 +12,7 @@
     "rollback:images": "ts-node scripts/rollback-images.ts"
   },
   "dependencies": {
-    "aws-sdk": "^2.724.0",
+    "aws-sdk": "^2.899.0",
     "p-iteration": "^1.1.8",
     "sharp": "^0.25.4",
     "source-map-support": "^0.5.10"
