@@ -96,6 +96,12 @@ functions:
           event: s3:ObjectCreated:Put
           rules:
             - prefix: circleCover/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectCreated:Put
+          rules:
+            - prefix: topicCover/
     memorySize: 2048
     timeout: 10
 
@@ -145,5 +151,11 @@ functions:
           event: s3:ObjectRemoved:DeleteMarkerCreated
           rules:
             - prefix: circleCover/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectRemoved:DeleteMarkerCreated
+          rules:
+            - prefix: topicCover/
     memorySize: 192
     timeout: 10
