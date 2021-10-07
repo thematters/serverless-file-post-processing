@@ -22,7 +22,6 @@ export enum IMAGE_TYPES {
   tagCover = 'tagCover',
   circleAvatar = 'circleAvatar',
   circleCover = 'circleCover',
-  topicCover = 'topicCover',
 }
 
 /**
@@ -73,12 +72,6 @@ export const IMAGE_SIZES: {
   ],
   circleAvatar: [{ width: 144, height: 144 }],
   circleCover: [
-    { width: 144, height: 144 },
-    { width: 360, height: null },
-    { width: 540, height: null },
-    { width: 1080, height: null },
-  ],
-  topicCover: [
     { width: 144, height: 144 },
     { width: 360, height: null },
     { width: 540, height: null },
