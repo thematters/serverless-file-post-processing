@@ -18,9 +18,17 @@ jobs:
     if: github.event.pull_request.merged == true
     name: Deploy Serverless Functions
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [14.x, 16.x]
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: ${{ matrix.node }}
 
       - name: Cache Dependencies
         id: cache

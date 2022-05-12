@@ -16,7 +16,7 @@ plugins:
 provider:
   name: aws
   region: ap-southeast-1
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   memorySize: 512
   timeout: 6
   versionFunctions: false
@@ -65,7 +65,7 @@ functions:
           existing: true
           event: s3:ObjectCreated:Put
           rules:
-            - prefix: profileCover/
+            - prefix: circleAvatar/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
@@ -83,19 +83,25 @@ functions:
           existing: true
           event: s3:ObjectCreated:Put
           rules:
+            - prefix: announcementCover/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectCreated:Put
+          rules:
             - prefix: tagCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
           event: s3:ObjectCreated:Put
           rules:
-            - prefix: circleAvatar/
+            - prefix: circleCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
           event: s3:ObjectCreated:Put
           rules:
-            - prefix: circleCover/
+            - prefix: profileCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
@@ -120,7 +126,7 @@ functions:
           existing: true
           event: s3:ObjectRemoved:DeleteMarkerCreated
           rules:
-            - prefix: profileCover/
+            - prefix: circleAvatar/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
@@ -138,19 +144,25 @@ functions:
           existing: true
           event: s3:ObjectRemoved:DeleteMarkerCreated
           rules:
+            - prefix: announcementCover/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectRemoved:DeleteMarkerCreated
+          rules:
             - prefix: tagCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
           event: s3:ObjectRemoved:DeleteMarkerCreated
           rules:
-            - prefix: circleAvatar/
+            - prefix: circleCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
           event: s3:ObjectRemoved:DeleteMarkerCreated
           rules:
-            - prefix: circleCover/
+            - prefix: profileCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true

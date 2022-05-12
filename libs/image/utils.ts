@@ -16,7 +16,9 @@ export const sharpProcess = async ({
   }
 }) => {
   return (
-    sharp(buffer)
+    sharp(buffer, {
+      pages: -1, // for all pages; of animated GIF/webp
+    })
       // auto-orient based on the EXIF `Orientation` tag
       .rotate()
       // convert format & compress
