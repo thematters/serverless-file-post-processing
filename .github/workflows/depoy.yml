@@ -18,9 +18,15 @@ jobs:
     if: github.event.pull_request.merged == true
     name: Deploy Serverless Functions
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - name: Cache Dependencies
         id: cache
@@ -31,12 +37,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      - run: npm ci
       - name: Install Dependencies
         run: npm install && SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux sharp
 
       # Develop
       - name: Deploy (devlop)
-        uses: serverless/github-action@master
+        uses: serverless/github-action@v3
         if: github.base_ref == 'develop'
         with:
           args: deploy --stage develop --force --verbose
