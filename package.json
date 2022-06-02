@@ -14,7 +14,7 @@
   "dependencies": {
     "aws-sdk": "^2.1132.0",
     "p-iteration": "^1.1.8",
-    "sharp": "^0.29.1",
+    "sharp": "^0.30.6",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
