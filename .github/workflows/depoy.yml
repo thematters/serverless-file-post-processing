@@ -44,7 +44,7 @@ jobs:
 
       - run: npm ci
       - name: Install Dependencies
-        run: npm install && npm uninstall sharp && SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc sharp
+        run: npm install && npm uninstall sharp && npm install --arch=x64 --platform=linux --libc=glibc sharp
 
       # Develop
       - name: Deploy (devlop)
@@ -58,7 +58,7 @@ jobs:
 
       # Stage
       - name: Deploy (stage)
-        uses: serverless/github-action@master
+        uses: serverless/github-action@v3
         if: github.base_ref == 'stage'
         with:
           args: deploy --stage stage --force --verbose
@@ -68,7 +68,7 @@ jobs:
 
       # Production
       - name: Deploy (production)
-        uses: serverless/github-action@master
+        uses: serverless/github-action@v3
         if: github.base_ref == 'master'
         with:
           args: deploy --stage production --force --verbose
