@@ -64,8 +64,6 @@ export const IMAGE_SIZES: {
     { width: 1080, height: null },
   ],
   announcementCover: [
-    { width: 144, height: 144 },
-    { width: 360, height: null },
     { width: 540, height: null },
     { width: 1080, height: null },
   ],
