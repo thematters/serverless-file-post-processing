@@ -1,4 +1,4 @@
-import { forEach } from 'p-iteration'
+// import { forEach } from 'p-iteration'
 
 import { sharpProcess, toProcessedKey, changeExt } from './utils'
 import {
@@ -151,7 +151,7 @@ export const processImage = async ({
   /**
    * Thumbnails
    */
-  return forEach(sizes, async (size) => {
+  return Promise.all(sizes.map(async (size) => {
     const subFolder = `${size.width}w`
     // non-WebP
     console.log(`[PROCESSING]: ${key}@${size.width}w`)
@@ -182,7 +182,7 @@ export const processImage = async ({
         ext: IMAGE_EXTS.webp,
       }),
     })
-  })
+  }))
 }
 
 /**

@@ -16,12 +16,13 @@ export const IMAGE_FOLDER_OUT = 'processed'
  */
 export enum IMAGE_TYPES {
   avatar = 'avatar',
-  profileCover = 'profileCover',
+  circleAvatar = 'circleAvatar',
   embed = 'embed',
   cover = 'cover',
+  announcementCover = 'announcementCover',
   tagCover = 'tagCover',
-  circleAvatar = 'circleAvatar',
   circleCover = 'circleCover',
+  profileCover = 'profileCover',
   topicCover = 'topicCover',
 }
 
@@ -49,7 +50,10 @@ export const IMAGE_SIZES: {
   [key in IMAGE_TYPES]: IMAGE_SIZE[]
 } = {
   avatar: [{ width: 144, height: 144 }],
-  profileCover: [
+  circleAvatar: [{ width: 144, height: 144 }],
+  embed: [
+    { width: 144, height: 144 },
+    { width: 360, height: null },
     { width: 540, height: null },
     { width: 1080, height: null },
   ],
@@ -59,9 +63,7 @@ export const IMAGE_SIZES: {
     { width: 540, height: null },
     { width: 1080, height: null },
   ],
-  embed: [
-    { width: 144, height: 144 },
-    { width: 360, height: null },
+  announcementCover: [
     { width: 540, height: null },
     { width: 1080, height: null },
   ],
@@ -71,10 +73,13 @@ export const IMAGE_SIZES: {
     { width: 540, height: null },
     { width: 1080, height: null },
   ],
-  circleAvatar: [{ width: 144, height: 144 }],
   circleCover: [
     { width: 144, height: 144 },
     { width: 360, height: null },
+    { width: 540, height: null },
+    { width: 1080, height: null },
+  ],
+  profileCover: [
     { width: 540, height: null },
     { width: 1080, height: null },
   ],
