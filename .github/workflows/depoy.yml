@@ -43,8 +43,9 @@ jobs:
             ${{ runner.os }}-node-
 
       - run: npm ci
+
       - name: Install Dependencies
-        run: npm install && rm -rf node_modules/sharp && npm install --arch=x64 --platform=linux --libc=glibc sharp
+        run: npm install && rm -rf node_modules/sharp && SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc --ignore-scripts=false --foreground-scripts --verbose sharp
 
       # Develop
       - name: Deploy (devlop)
