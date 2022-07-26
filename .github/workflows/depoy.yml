@@ -44,7 +44,7 @@ jobs:
 
       - run: npm ci
       - name: Install Dependencies
-        run: npm install && rm -rf node_modules/sharp && SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc sharp
+        run: npm install && npm uninstall sharp && SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc sharp
 
       # Develop
       - name: Deploy (devlop)
