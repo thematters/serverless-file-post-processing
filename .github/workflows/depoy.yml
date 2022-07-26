@@ -42,14 +42,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - run: npm ci
-
       - name: Install Dependencies
         run: npm install && rm -rf node_modules/sharp && SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc --ignore-scripts=false --foreground-scripts --verbose sharp
 
       # Develop
       - name: Deploy (devlop)
-        uses: serverless/github-action@v2
+        uses: serverless/github-action@v3
         if: github.base_ref == 'develop'
         with:
           args: deploy --stage develop --force --verbose
@@ -59,7 +57,7 @@ jobs:
 
       # Stage
       - name: Deploy (stage)
-        uses: serverless/github-action@v2
+        uses: serverless/github-action@v3
         if: github.base_ref == 'stage'
         with:
           args: deploy --stage stage --force --verbose
@@ -69,7 +67,7 @@ jobs:
 
       # Production
       - name: Deploy (production)
-        uses: serverless/github-action@v2
+        uses: serverless/github-action@v3
         if: github.base_ref == 'master'
         with:
           args: deploy --stage production --force --verbose
