@@ -1,4 +1,4 @@
-import 'source-map-support/register'
+// import 'source-map-support/register'
 import { S3Handler, APIGatewayProxyHandler } from 'aws-lambda'
 import { S3EventRecord } from 'aws-lambda'
 // import { forEach } from 'p-iteration'
