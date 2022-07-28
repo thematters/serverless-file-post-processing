@@ -1,6 +1,6 @@
 {
   "name": "serverless-file-post-processing",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "author": "Matters <hi@matters.news>",
   "description": "Post processing files uploaded to AWS S3 by AWS Lambda",
   "license": "MIT",

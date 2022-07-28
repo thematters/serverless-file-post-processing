@@ -9,10 +9,10 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
-    packagerOptions:
-      scripts:
-        - rm -rf node_modules/sharp
-        - SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc --ignore-scripts=false --foreground-scripts --verbose sharp
+    # packagerOptions:
+    #   scripts:
+    #     - rm -rf node_modules/sharp
+    #     - SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc --ignore-scripts=false --foreground-scripts --verbose sharp
 
 plugins:
   - serverless-webpack
