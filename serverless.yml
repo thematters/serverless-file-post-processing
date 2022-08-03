@@ -9,6 +9,10 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+    # packagerOptions:
+    #   scripts:
+    #     - rm -rf node_modules/sharp
+    #     - SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install --arch=x64 --platform=linux --libc=glibc --ignore-scripts=false --foreground-scripts --verbose sharp
 
 plugins:
   - serverless-webpack
@@ -16,7 +20,7 @@ plugins:
 provider:
   name: aws
   region: ap-southeast-1
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   memorySize: 512
   timeout: 6
   versionFunctions: false
@@ -47,7 +51,7 @@ functions:
           method: POST
           path: /migrate
     memorySize: 512
-    timeout: 20
+    timeout: 60
 
   imageCreated:
     handler: handlers/image.created
@@ -65,7 +69,7 @@ functions:
           existing: true
           event: s3:ObjectCreated:Put
           rules:
-            - prefix: profileCover/
+            - prefix: circleAvatar/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
@@ -83,13 +87,13 @@ functions:
           existing: true
           event: s3:ObjectCreated:Put
           rules:
-            - prefix: tagCover/
+            - prefix: announcementCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
           event: s3:ObjectCreated:Put
           rules:
-            - prefix: circleAvatar/
+            - prefix: tagCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
@@ -101,9 +105,15 @@ functions:
           existing: true
           event: s3:ObjectCreated:Put
           rules:
+            - prefix: profileCover/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectCreated:Put
+          rules:
             - prefix: topicCover/
     memorySize: 2048
-    timeout: 10
+    timeout: 60
 
   imageDeleted:
     handler: handlers/image.deleted
@@ -120,7 +130,7 @@ functions:
           existing: true
           event: s3:ObjectRemoved:DeleteMarkerCreated
           rules:
-            - prefix: profileCover/
+            - prefix: circleAvatar/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
@@ -138,19 +148,25 @@ functions:
           existing: true
           event: s3:ObjectRemoved:DeleteMarkerCreated
           rules:
+            - prefix: announcementCover/
+      - s3:
+          bucket: ${self:custom.bucket.${self:provider.stage}}
+          existing: true
+          event: s3:ObjectRemoved:DeleteMarkerCreated
+          rules:
             - prefix: tagCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
           event: s3:ObjectRemoved:DeleteMarkerCreated
           rules:
-            - prefix: circleAvatar/
+            - prefix: circleCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true
           event: s3:ObjectRemoved:DeleteMarkerCreated
           rules:
-            - prefix: circleCover/
+            - prefix: profileCover/
       - s3:
           bucket: ${self:custom.bucket.${self:provider.stage}}
           existing: true

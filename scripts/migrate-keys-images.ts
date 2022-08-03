@@ -6,7 +6,7 @@ import * as prompts from 'prompts'
 import * as chalk from 'chalk'
 import { forEach, forEachSeries } from 'p-iteration'
 import axios from 'axios'
-import * as _ from 'lodash'
+// import * as _ from 'lodash'
 
 const questions: Array<prompts.PromptObject> = [
   {
@@ -60,13 +60,8 @@ const questions: Array<prompts.PromptObject> = [
 ]
 
 ;(async () => {
-  const {
-    migrationEndpoint,
-    bucket,
-    keysFile,
-    count,
-    readyToStart,
-  } = await prompts(questions)
+  const { migrationEndpoint, bucket, keysFile, count, readyToStart } =
+    await prompts(questions)
 
   if (!readyToStart) {
     console.log(chalk.green('------- END -------'))
@@ -81,7 +76,11 @@ const questions: Array<prompts.PromptObject> = [
     .split('\n')
     .map((k) => k.trim())
     .filter((k) => !!k)
-  const chunks = _.chunk(keys, count)
+  const chunks = Array.from(
+    // _.chunk(keys, count)
+    { length: Math.ceil(keys.length / count) },
+    (_, i) => keys.slice(i * count, (i + 1) * count)
+  )
 
   const validFolders = ['avatar/', 'cover/', 'embed/', 'profileCover/']
   keys.forEach((key) => {

@@ -8,7 +8,7 @@
 import * as prompts from 'prompts'
 import * as chalk from 'chalk'
 import * as fs from 'fs'
-import * as _ from 'lodash'
+// import * as _ from 'lodash'
 import { forEach, forEachSeries } from 'p-iteration'
 
 import { S3Service } from '../services'
@@ -100,7 +100,11 @@ const questions: Array<prompts.PromptObject> = [
     .split('\n')
     .map((k) => k.trim())
     .filter((k) => !!k)
-  const chunks = _.chunk(keys, count)
+  const chunks = Array.from(
+    // _.chunk(keys, count)
+    { length: Math.ceil(keys.length / count) },
+    (_, i) => keys.slice(i * count, (i + 1) * count)
+  )
 
   const validFolders = ['avatar/', 'cover/', 'embed/', 'profileCover/']
   keys.forEach((key) => {

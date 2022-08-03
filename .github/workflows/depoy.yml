@@ -18,13 +18,24 @@ jobs:
     if: github.event.pull_request.merged == true
     name: Deploy Serverless Functions
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@master
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - name: Cache Dependencies
         id: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -36,7 +47,7 @@ jobs:
 
       # Develop
       - name: Deploy (devlop)
-        uses: serverless/github-action@master
+        uses: serverless/github-action@v3.1.0
         if: github.base_ref == 'develop'
         with:
           args: deploy --stage develop --force --verbose
@@ -46,7 +57,7 @@ jobs:
 
       # Stage
       - name: Deploy (stage)
-        uses: serverless/github-action@master
+        uses: serverless/github-action@v3.1.0
         if: github.base_ref == 'stage'
         with:
           args: deploy --stage stage --force --verbose
@@ -56,7 +67,7 @@ jobs:
 
       # Production
       - name: Deploy (production)
-        uses: serverless/github-action@master
+        uses: serverless/github-action@v3.1.0
         if: github.base_ref == 'master'
         with:
           args: deploy --stage production --force --verbose
