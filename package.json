@@ -29,7 +29,7 @@
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
     "prompts": "^2.3.2",
-    "serverless": "^1.81.1",
+    "serverless": "^3.25.1",
     "serverless-webpack": "^5.3.3",
     "ts-loader": "^8.0.1",
     "ts-node": "^8.10.2",
